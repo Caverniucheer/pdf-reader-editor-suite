@@ -1,0 +1,1 @@
+"""Long-lived services: document registry, render cache, OCR pipeline."""
