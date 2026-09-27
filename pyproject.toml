@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling>=1.24", "hatch-vcs>=0.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdf-reader-editor-suite"
+version = "0.4.2"
+description = "Windows PDF reader and editor with modular render, extract, and edit pipelines."
+readme = "CONTRIBUTING.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "pdf-suite maintainers" }]
+keywords = ["pdf", "reader", "editor", "windows", "pdfium", "ocr"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Win32 (MS Windows)",
+  "Intended Audience :: End Users/Desktop",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Office/Business :: Office Suites",
+  "Topic :: Multimedia :: Graphics :: Viewers",
+]
+
+dependencies = [
+  "pypdfium2>=4.30.0,<5",
+  "pikepdf>=9.0.0,<10",
+  "Pillow>=10.4.0,<11",
+  "pydantic>=2.8.0,<3",
+  "typer>=0.12.0,<1",
+  "rich>=13.7.0,<14",
+  "watchdog>=4.0.0,<5",
+  "python-magic-bin>=0.4.14 ; sys_platform == 'win32'",
+]
+
+[project.optional-dependencies]
+ocr = ["pytesseract>=0.3.13", "pdf2image>=1.17.0"]
+native = ["cffi>=1.17.0"]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-qt>=4.4.0",
+  "mypy>=1.11.0",
+  "ruff>=0.6.0",
+  "pre-commit>=3.8.0",
+]
+
+[project.scripts]
+pdf-suite = "pdf_suite.__main__:main"
+pdf-suite-cli = "pdf_suite.cli.app:run"
+
+[project.urls]
+Homepage = "https://github.com/pdf-suite/pdf-reader-editor-suite"
+Issues = "https://github.com/pdf-suite/pdf-reader-editor-suite/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pdf_suite"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["pdf_suite"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
